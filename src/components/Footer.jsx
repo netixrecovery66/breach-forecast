@@ -1,4 +1,4 @@
-export default function Footer() {
+export default function Footer({ onTermsClick }) {
   return (
     <footer className="site-footer">
       <div className="footer-grid">
@@ -15,7 +15,7 @@ export default function Footer() {
           <a href="/">Breach Forecast App</a>
           <a href="/fix-it-guide">Fix-It Guide</a>
           <a href="/netix-shield">Netix Shield (Coming Soon)</a>
-          <a href="/terms">Terms &amp; Refund Policy</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); onTermsClick(); }}>Terms &amp; Refund Policy</a>
         </div>
 
         <div className="footer-contact">
@@ -32,7 +32,7 @@ export default function Footer() {
         <div className="footer-bottom-btns">
           <a href="https://wa.me/27627391320" target="_blank" rel="noreferrer" className="nav-btn nav-btn-whatsapp">WhatsApp</a>
           <a href="mailto:netixashton@gmail.com" className="nav-btn nav-btn-outline">Contact Us</a>
-          <a href="/terms" className="nav-btn nav-btn-ghost">Terms &amp; Refund Policy</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); onTermsClick(); }} className="nav-btn nav-btn-ghost">Terms &amp; Refund Policy</a>
         </div>
       </div>
     </footer>

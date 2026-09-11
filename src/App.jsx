@@ -6,6 +6,7 @@ import ScanningScreen from "./components/ScanningScreen";
 import RiskBrief from "./components/RiskBrief";
 import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
+import Terms from "./components/Terms";
 import { generateRiskBrief } from "./lib/riskEngine";
 import "./App.css";
 
@@ -48,7 +49,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Header />
+      <Header onTermsClick={() => setStage("terms")} />
 
       <main className="app-main">
         {stage === "form" && (
@@ -64,9 +65,10 @@ export default function App() {
         {stage === "report" && (
           <RiskBrief formData={formData} brief={brief} onRunAnother={handleRunAnother} />
         )}
+      {stage === "terms" && <Terms onBack={() => setStage("form")} />}
       </main>
 
-      <Footer />
+      <Footer onTermsClick={() => setStage("terms")} />
     </div>
   );
 }
