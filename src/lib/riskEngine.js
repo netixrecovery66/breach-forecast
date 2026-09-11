@@ -114,3 +114,38 @@ export function generateRiskBrief({ companyName, domain, revenueRange, industry 
     findings,
   };
 }
+export function generateReportText(formData, brief) {
+  const revenueLabels = {
+    "under-10k": "Under $10,000/month",
+    "10k-50k": "$10,000 - $50,000/month",
+    "50k-200k": "$50,000 - $200,000/month",
+    "200k-1m": "$200,000 - $1,000,000/month",
+    "over-1m": "Over $1,000,000/month",
+  };
+
+  const lines = [];
+  lines.push("NETIX RECOVERY — BREACH FORECAST REPORT");
+  lines.push("");
+  lines.push(`Company: ${formData.companyName}`);
+  lines.push(`Industry: ${formData.industry}`);
+  lines.push(`Monthly Revenue: ${revenueLabels[formData.revenueRange] || formData.revenueRange}`);
+  lines.push(`Scan Date: ${new Date().toLocaleString("en-ZA")}`);
+  lines.push(`Website: ${formData.siteUrl}`);
+  lines.push("");
+  lines.push(`Total Exposure Identified: R${brief.totalExposure.toLocaleString("en-ZA")}`);
+  lines.push(`Overall Risk Level: ${brief.overallRisk}`);
+  lines.push(`Areas Flagged: ${brief.areasFlagged}`);
+  lines.push("");
+  lines.push("RISK FINDINGS BY AREA");
+  lines.push("---");
+
+  brief.findings.forEach((f) => {
+    lines.push(f.title);
+    lines.push(`Severity: ${f.severity}`);
+    lines.push(`Estimated Exposure: R${f.amount.toLocaleString("en-ZA")}`);
+    lines.push(`Finding: ${f.description}`);
+    lines.push("---");
+  });
+
+  return lines.join("\n");
+}

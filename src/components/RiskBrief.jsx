@@ -1,3 +1,5 @@
+import { generateReportText } from "../lib/riskEngine";
+
 const SEVERITY_CLASS = {
   High: "severity-high",
   Medium: "severity-medium",
@@ -14,6 +16,19 @@ export default function RiskBrief({ formData, brief, onRunAnother }) {
     timeStyle: "short",
   });
 
+  function handleDownload() {
+    const text = generateReportText(formData, brief);
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${formData.companyName.replace(/\s+/g, "-")}-breach-forecast-report.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="risk-brief">
       <p className="brief-eyebrow">EXECUTIVE RISK BRIEF · NETIX — BREACH FORECAST</p>
@@ -24,7 +39,8 @@ export default function RiskBrief({ formData, brief, onRunAnother }) {
             "under-10k": "Under $10,000/month",
             "10k-50k": "$10,000 - $50,000/month",
             "50k-200k": "$50,000 - $200,000/month",
-            "over-200k": "Over $200,000/month",
+            "200k-1m": "$200,000 - $1,000,000/month",
+            "over-1m": "Over $1,000,000/month",
           }[formData.revenueRange]
         } · {formData.siteUrl}
       </p>
@@ -71,8 +87,11 @@ export default function RiskBrief({ formData, brief, onRunAnother }) {
           Download your report to keep a record of these findings. Then head to our Fix-It
           Guide — your personalised step-by-step plan to fix every flagged issue.
         </p>
-        <button className="download-btn">↓ Download Report</button>
-        <button className="fixit-btn">→ Get my Fix-It Plan — $147</button>
+        <button className="download-btn" onClick={handleDownload}>
+          ↓ Download Report
+        </button>
+        
+         <a className="fixit-btn" href="https://netixrecovery-fixitguide.netlify.app/" target="_blank" rel="noopener noreferrer">→ Get my Fix-It Plan — $147</a>
         <button className="rerun-link" onClick={onRunAnother}>
           Run another scan
         </button>
