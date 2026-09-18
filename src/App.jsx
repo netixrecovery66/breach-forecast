@@ -15,9 +15,15 @@ export default function App() {
   const [formData, setFormData] = useState(null);
   const [brief, setBrief] = useState(null);
 
-  function handleFormSubmit(data) {
+   function handleFormSubmit(data) {
     setFormData(data);
     setStage("scanning");
+
+    fetch("https://formspree.io/f/mwlppebv", {
+      method: "POST",
+      headers: { Accept: "application/json" },
+      body: JSON.stringify(data),
+    }).catch(() => {});
   }
 
   function handleScanComplete() {
