@@ -1,4 +1,4 @@
-import { formatMoney } from "./currency";
+import { bracketLabel, formatMoney } from "./currency";
 // riskEngine.js
 // Generates a business's risk exposure numbers from real inputs
 // (revenue bracket + company name), instead of static placeholders.
@@ -129,7 +129,7 @@ export function generateReportText(formData, brief) {
   lines.push("");
   lines.push(`Company: ${formData.companyName}`);
   lines.push(`Industry: ${formData.industry}`);
-  lines.push(`Monthly Revenue: ${revenueLabels[formData.revenueRange] || formData.revenueRange}`);
+  lines.push(`Monthly Revenue: ${bracketLabel(formData.revenueRange, formData.currency)}`);
   lines.push(`Scan Date: ${new Date().toLocaleString("en-ZA")}`);
   lines.push(`Website: ${formData.siteUrl}`);
   lines.push("");
