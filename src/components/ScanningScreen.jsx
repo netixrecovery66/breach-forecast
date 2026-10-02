@@ -9,7 +9,7 @@ const SCAN_STEPS = [
   "Running Digital Forensic sweep",
 ];
 
-const STEP_DELAY_MS = 500;
+const STEP_DELAY_MS = 15000;
 
 export default function ScanningScreen({ onComplete }) {
   const [completedSteps, setCompletedSteps] = useState(0);
