@@ -1,3 +1,4 @@
+import { formatMoney } from "./currency";
 // riskEngine.js
 // Generates a business's risk exposure numbers from real inputs
 // (revenue bracket + company name), instead of static placeholders.
@@ -132,7 +133,7 @@ export function generateReportText(formData, brief) {
   lines.push(`Scan Date: ${new Date().toLocaleString("en-ZA")}`);
   lines.push(`Website: ${formData.siteUrl}`);
   lines.push("");
-  lines.push(`Total Exposure Identified: R${brief.totalExposure.toLocaleString("en-ZA")}`);
+  lines.push(`Total Exposure Identified: ${formatMoney(brief.totalExposure, formData.currency)}`);
   lines.push(`Overall Risk Level: ${brief.overallRisk}`);
   lines.push(`Areas Flagged: ${brief.areasFlagged}`);
   lines.push("");
@@ -142,7 +143,7 @@ export function generateReportText(formData, brief) {
   brief.findings.forEach((f) => {
     lines.push(f.title);
     lines.push(`Severity: ${f.severity}`);
-    lines.push(`Estimated Exposure: R${f.amount.toLocaleString("en-ZA")}`);
+    lines.push(`Estimated Exposure: ${formatMoney(f.amount, formData.currency)}`);
     lines.push(`Finding: ${f.description}`);
     lines.push("---");
   });

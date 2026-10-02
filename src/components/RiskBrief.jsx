@@ -1,4 +1,5 @@
 import { generateReportText } from "../lib/riskEngine";
+import { bracketLabel, formatMoney } from "../lib/currency";
 
 const SEVERITY_CLASS = {
   High: "severity-high",
@@ -6,11 +7,10 @@ const SEVERITY_CLASS = {
   Low: "severity-low",
 };
 
-function formatCurrency(amount) {
-  return `R${amount.toLocaleString("en-ZA")}`;
-}
-
 export default function RiskBrief({ formData, brief, onRunAnother }) {
+  const currency = formData.currency || "USD";
+  const formatCurrency = (amount) => formatMoney(amount, currency);
+
   const scannedAt = new Date().toLocaleString("en-ZA", {
     dateStyle: "short",
     timeStyle: "short",
@@ -34,15 +34,8 @@ export default function RiskBrief({ formData, brief, onRunAnother }) {
       <p className="brief-eyebrow">EXECUTIVE RISK BRIEF · NETIX — BREACH FORECAST</p>
       <h1>{formData.companyName} — Risk Brief</h1>
       <p className="brief-meta">
-        Scanned {scannedAt}, {formData.industry} · {
-          {
-            "under-10k": "Under $10,000/month",
-            "10k-50k": "$10,000 - $50,000/month",
-            "50k-200k": "$50,000 - $200,000/month",
-            "200k-1m": "$200,000 - $1,000,000/month",
-            "over-1m": "Over $1,000,000/month",
-          }[formData.revenueRange]
-        } · {formData.siteUrl}
+        Scanned {scannedAt}, {formData.industry} ·{" "}
+        {bracketLabel(formData.revenueRange, currency)} · {formData.siteUrl}
       </p>
 
       <div className="brief-summary">
@@ -90,8 +83,14 @@ export default function RiskBrief({ formData, brief, onRunAnother }) {
         <button className="download-btn" onClick={handleDownload}>
           ↓ Download Report
         </button>
-        
-         <a className="fixit-btn" href="https://netixrecovery-fixitguide.netlify.app/" target="_blank" rel="noopener noreferrer">→ Get my Fix-It Plan — $147</a>
+        <a
+          className="fixit-btn"
+          href="https://netixrecovery-fixitguide.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          → Get my Fix-It Plan — $147
+        </a>
         <button className="rerun-link" onClick={onRunAnother}>
           Run another scan
         </button>

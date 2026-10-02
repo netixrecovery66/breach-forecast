@@ -1,12 +1,10 @@
 import { useState } from "react";
-
-const REVENUE_OPTIONS = [
-  { value: "under-10k", label: "Under $10,000/month" },
-  { value: "10k-50k", label: "$10,000 - $50,000/month" },
-  { value: "50k-200k", label: "$50,000 - $200,000/month" },
-  { value: "200k-1m", label: "$200,000 - $1,000,000/month" },
-  { value: "over-1m", label: "Over $1,000,000/month" },
-];
+import {
+  CURRENCY_OPTIONS,
+  REVENUE_VALUES,
+  bracketLabel,
+  detectCurrency,
+} from "../lib/currency";
 
 const INDUSTRY_OPTIONS = [
   "eCommerce / Online Retail",
@@ -38,6 +36,7 @@ export default function ScanForm({ onSubmit }) {
     siteUrl: "",
     email: "",
     industry: "",
+    currency: detectCurrency(),
     revenueRange: "",
   });
   const [errors, setErrors] = useState({});
@@ -133,21 +132,36 @@ export default function ScanForm({ onSubmit }) {
           </div>
 
           <div className="form-field">
-            <label htmlFor="revenueRange">Monthly Revenue</label>
+            <label htmlFor="currency">Currency</label>
             <select
-              id="revenueRange"
-              value={formData.revenueRange}
-              onChange={(e) => handleChange("revenueRange", e.target.value)}
+              id="currency"
+              value={formData.currency}
+              onChange={(e) => handleChange("currency", e.target.value)}
             >
-              <option value="">Select range</option>
-              {REVENUE_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
+              {CURRENCY_OPTIONS.map((opt) => (
+                <option key={opt.code} value={opt.code}>
                   {opt.label}
                 </option>
               ))}
             </select>
-            {errors.revenueRange && <span className="field-error">{errors.revenueRange}</span>}
           </div>
+        </div>
+
+        <div className="form-field">
+          <label htmlFor="revenueRange">Monthly Revenue</label>
+          <select
+            id="revenueRange"
+            value={formData.revenueRange}
+            onChange={(e) => handleChange("revenueRange", e.target.value)}
+          >
+            <option value="">Select range</option>
+            {REVENUE_VALUES.map((value) => (
+              <option key={value} value={value}>
+                {bracketLabel(value, formData.currency)}
+              </option>
+            ))}
+          </select>
+          {errors.revenueRange && <span className="field-error">{errors.revenueRange}</span>}
         </div>
 
         <button type="submit" className="scan-submit">
